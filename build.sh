@@ -2,6 +2,10 @@
 flags="*.c -o game "
 can=1
 play=0
+if [[ $# -le 0 ]]; then
+    echo -e "\033[1;31mNo flags supplied!\033[0m"
+    exit -1
+fi
 for option in "$@"; do
     case $option in
         -d) if [[ can -eq 1 ]]; then
