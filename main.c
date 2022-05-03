@@ -7,7 +7,7 @@
 #define SQR(x) (x*x)
 
 int R=1, numit=100, chng=0;
-float a=1, b=1, c=1;
+float a=1, b=1, c=1, scale=1;
 char* a_str="1",* b_str="1",* c_str="1",* i_str="100", v2i='a', *inp="\0";
 char* LUT[52]={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -38,8 +38,15 @@ void input(){
                     v2i='i';
                 break;
                 case SDLK_F1:
-                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Help", "use keys A, B, C, I to select variable. Press F2 to change corresponding variable.(EX: a->f2->100;a now = 100)(Max for I=100)", NULL);
+                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Help", "use keys A, B, C, I to select variable. Press F2 to change corresponding variable.(EX: a->f2->100->f2;a now = 100)(Max for I=500). Z and X for zooming", NULL);
                 break;
+                case SDLK_z:
+                    if(scale < 10)
+                        scale += 0.25;
+                break;
+                case SDLK_x:
+                    if(scale > 0.25);
+                        scale -= 0.25;
                 case SDLK_F2:
                     if(!chng){
                         chng=1;
@@ -84,8 +91,8 @@ void input(){
                                     memset(i_str,0,sizeof(inp));
                                     strcpy(i_str,inp);
                                     numit=atoi(i_str);
-                                    if(numit>100)
-                                        numit=100;
+                                    if(numit>500)
+                                        numit=500;
                                 break;
                             }
                         }
@@ -115,17 +122,17 @@ int main(){
 
         input();
         ClearWindow(win);
-        for(int i=-numit-1;i<numit;++i)
-            DisplayRect(win, 400+(i-1.5), 300-(sqrfunc(i,a, b, c))-1.5, 3, 3,RED);
+        DisplayLine(win, 0,300,800,300,BLACK);
+        DisplayText(win, font, "x", 776, 276,BLACK);
+        DisplayLine(win, 400,0,400,800,BLACK);
+        DisplayText(win, font, "y", 404, 0,BLACK);
+        for(int i=-numit;i<numit;++i)
+            DisplayRect(win, 400+((i-1)*scale), 300-(sqrfunc(i,a, b, c)*scale)-1, 2*scale, 2*scale,RED);
         /*fuckery down below*/
         char* toinp_full=malloc(sizeof("var selected(F2 to start input): ")+4);
         sprintf(toinp_full,"var selected(F1 HELP): %c", v2i);
         DisplayText(win,font,toinp_full,4,0, BLACK); 
         free(toinp_full);
-        DisplayLine(win, 0,300,800,300,BLACK);
-        DisplayText(win, font, "x", 776, 276,BLACK);
-        DisplayLine(win, 400,0,400,800,BLACK);
-        DisplayText(win, font, "y", 404, 0,BLACK);
         DisplayText(win,font,"points: ",4,482,BLACK);
         DisplayText(win,font,i_str,106,482,BLACK);
         DisplayText(win,font,"a: ",4,510,BLACK);
