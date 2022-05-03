@@ -103,17 +103,14 @@ void input(){
 }
 int main(){
     Window_t* win=CreateWindow("PARABOLA_tavā_mātē", 800, 600);
-    uint32_t start=SDL_GetTicks(),time, last=0;
+    uint32_t start=SDL_GetTicks(),time;
 
     SDL_Color BLACK={0,0,0};
     SDL_Color RED={255,0,0};
-    SDL_Color GREEN={0,255,0};
-    SDL_Color BLUE={0,0,255};
 
     TTF_Init();
     TTF_Font* font=TTF_OpenFont("font.ttf", 22);
     while(R){
-        last=start;
         start=SDL_GetTicks();
 
         input();
@@ -122,7 +119,7 @@ int main(){
             DisplayRect(win, 400+(i-1.5), 300-(sqrfunc(i,a, b, c))-1.5, 3, 3,RED);
         /*fuckery down below*/
         char* toinp_full=malloc(sizeof("var selected(F2 to start input): ")+4);
-        sprintf(toinp_full,"var selected(F2 changes): %c", v2i);
+        sprintf(toinp_full,"var selected(F1 HELP): %c", v2i);
         DisplayText(win,font,toinp_full,4,0, BLACK); 
         free(toinp_full);
         DisplayLine(win, 0,300,800,300,BLACK);
