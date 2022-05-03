@@ -122,7 +122,7 @@ int main(){
             DisplayRect(win, 400+(i-1.5), 300-(sqrfunc(i,a, b, c))-1.5, 3, 3,RED);
         /*fuckery down below*/
         char* toinp_full=malloc(sizeof("var selected(F2 to start input): ")+4);
-        sprintf(toinp_full,"var selected(i change): %c", v2i);
+        sprintf(toinp_full,"var selected(F2 changes): %c", v2i);
         DisplayText(win,font,toinp_full,4,0, BLACK); 
         free(toinp_full);
         DisplayLine(win, 0,300,800,300,BLACK);

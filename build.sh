@@ -1,5 +1,5 @@
 #!/bin/bash
-flags="*.c -o game "
+flags="*.c -o program "
 can=1
 play=0
 if [[ $# -le 0 ]]; then
@@ -30,5 +30,5 @@ elif [[ $compiled -eq 0 ]]; then
     echo -e "\033[1;32mCompilation Succeeded!\033[0m"
 fi
 if [[ $play -eq 1 ]]; then
-    ./game
+    ./program
 fi
