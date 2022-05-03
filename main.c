@@ -2,8 +2,13 @@
 #include "window.h"
 #include <stdint.h>
 #include <string.h>
+
 #define DELAY 1000/24
 #define SQR(x) (x*x)
+/*What I need 2 do:
+    input variables
+    clean up ui
+*/
 
 int R=1;
 int numit=100;
