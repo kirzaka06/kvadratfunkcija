@@ -8,11 +8,11 @@
 
 int R=1, numit=100, chng=0;
 float a=1, b=1, c=1;
-char* a_str="1",* b_str="1",* c_str="1", v2i='a', *inp="\0";
+char* a_str="1",* b_str="1",* c_str="1",* i_str="100", v2i='a', *inp="\0";
 char* LUT[52]={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 float sqrfunc(float x,float a, float b, float c){
-    float result = ((a*(SQR(x))) + (x*b) + c);
+    float result = a*(SQR(x)) + b*x + c;
     return result;
 }
 void input(){
@@ -34,8 +34,11 @@ void input(){
                 case SDLK_c:
                     v2i='c';
                 break;
+                case SDLK_i:
+                    v2i='i';
+                break;
                 case SDLK_F1:
-                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Help", "use keys A, B, C to change selected variable. Use I to start changing said variable.", NULL);
+                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Help", "use keys A, B, C, I to select variable. Press F2 to change corresponding variable.(EX: a->f2->100;a now = 100)(Max for I=100)", NULL);
                 break;
                 case SDLK_F2:
                     if(!chng){
@@ -76,6 +79,14 @@ void input(){
                                     strcpy(c_str,inp);
                                     c=atof(c_str);
                                 break;
+                                case 'i':
+                                    i_str=malloc(sizeof(inp));
+                                    memset(i_str,0,sizeof(inp));
+                                    strcpy(i_str,inp);
+                                    numit=atoi(i_str);
+                                    if(numit>100)
+                                        numit=100;
+                                break;
                             }
                         }
                     }
@@ -107,25 +118,27 @@ int main(){
 
         input();
         ClearWindow(win);
-        DisplayLine(win, 0,300,800,300,BLACK);
-        DisplayText(win, font, "x", 776, 276,BLACK);
-        DisplayLine(win, 400,0,400,800,BLACK);
-        DisplayText(win, font, "y", 404, 0,BLACK);
-        for(int i=-numit+1;i<numit;++i)
-            DisplayRect(win, 400+i-2, 250+(sqrfunc(i,a, b, c))-2, 4, 4,RED);
+        for(int i=-numit-1;i<numit;++i)
+            DisplayRect(win, 400+(i-1.5), 300-(sqrfunc(i,a, b, c))-1.5, 3, 3,RED);
         /*fuckery down below*/
         char* toinp_full=malloc(sizeof("var selected(F2 to start input): ")+4);
         sprintf(toinp_full,"var selected(i change): %c", v2i);
         DisplayText(win,font,toinp_full,4,0, BLACK); 
         free(toinp_full);
+        DisplayLine(win, 0,300,800,300,BLACK);
+        DisplayText(win, font, "x", 776, 276,BLACK);
+        DisplayLine(win, 400,0,400,800,BLACK);
+        DisplayText(win, font, "y", 404, 0,BLACK);
+        DisplayText(win,font,"points: ",4,482,BLACK);
+        DisplayText(win,font,i_str,106,482,BLACK);
         DisplayText(win,font,"a: ",4,510,BLACK);
         DisplayText(win,font,a_str,28,510,BLACK);
         DisplayText(win,font,"b: ",4,538,BLACK);
         DisplayText(win,font,b_str,28,538,BLACK);
         DisplayText(win,font,"c: ",4,566,BLACK);
         DisplayText(win,font,c_str,28,566,BLACK);
-        /*if(strlen(inp)>0)
-            DisplayText(win,font,inp,250,272,BLACK);*/
+        if(strlen(inp)>0)
+            DisplayText(win,font,inp,0,28,BLACK);
         PresentWindow(win);
 
         time=SDL_GetTicks()-start;
